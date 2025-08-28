@@ -17,11 +17,13 @@ Práctico: Chequeo de la instalación del software necesario y acceso a datos co
 
 ## Día 2
 
-Teórico - Práctico: Introducción al uso del paquete DADA2: Estructura de archivos y cómo filtrar secuencias. Modelado de errores, delineado de ASV, combinación de secuencias, eliminación de quimeras y asignación taxonómica.  2 hs.  
+Teórico - Práctico: Introducción al uso del paquete DADA2: Estructura de archivos y cómo filtrar secuencias. Modelado de errores, delineado de ASV, combinación de secuencias, eliminación de quimeras y asignación taxonómica.  2 hs. 
 
 Teórico - Práctico: Introducción al paquete Phyloseq. Creación de objetos phyloseq, rarefacción. 1 hr.  
 
 Teórico - Práctico: Árbol filogenético 1 hora.  
+
+[Tutorial 1](https://ceci07.github.io/metabarcoding/dia2.html)
 
 
 ## Día 3
