@@ -4,6 +4,7 @@
 ## Lugar: Institut Pasteur de Montevideo - Uruguay  
 ### Responsables: Pablo Fresia, PhD y Tamara Fernández-Calero, PhD  
 
+Se trabajará con los datos del trabajo 
 
 
 ## Día 1
@@ -45,5 +46,4 @@ Taller: Interpretación de resultados y discusión.
 
 
 ## Evaluación
-Aquellos estudiantes que realicen la evaluación individual recibirán el certificado de aprobación con la nota correspondiente.
-
+A definir
