@@ -368,9 +368,22 @@ color: #403d39;
 <div id="section" class="section level19">
 <p class="heading"></p>
 </div>
+<div id="load-libraries" class="section level1">
+<h1>Load libraries</h1>
+<div id="section-1" class="section level19">
+<p class="heading"></p>
+<pre><code>library(dada2)
+library(ShortRead)
+library(Biostrings)
+library(reshape2)</code></pre>
+</div>
+<div id="section-2" class="section level19">
+<p class="heading"></p>
+</div>
+</div>
 <div id="filter-reads" class="section level1">
 <h1>1. Filter reads</h1>
-<div id="section-1" class="section level19">
+<div id="section-3" class="section level19">
 <p class="heading"></p>
 </div>
 <div id="check-you-are-working-on-the-folder-where-the-data-is.-if-the-data-is-not-there-change-the-working-directory-with-setwdpathtofiles" class="section level2">
@@ -379,7 +392,7 @@ is not there change the working directory with
 setwd(“path/to/files”)</h2>
 <div id="set-path-to-folder-in-which-you-have-your-data" class="section level3">
 <h3>Set path to folder in which you have your data</h3>
-<pre><code>path &lt;-getwd()</code></pre>
+<pre><code>path &lt;- setwd()</code></pre>
 </div>
 <div id="check-if-path-is-correct-and-all-files-are-here" class="section level3">
 <h3>Check if path is correct and all files are here</h3>
@@ -430,14 +443,14 @@ filtRs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_R
 maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=FALSE) #On Linux or Mac you can set multithread=TRUE
 
 save(out, file=&quot;out&quot;)</code></pre>
-<div id="section-2" class="section level53">
+<div id="section-4" class="section level53">
 <p class="heading"></p>
 </div>
 </div>
 </div>
 <div id="dereplicate-learn-error-rates-and-run-dada2" class="section level1">
 <h1>2. Dereplicate, learn error rates, and run DADA2</h1>
-<div id="section-3" class="section level53">
+<div id="section-5" class="section level53">
 <p class="heading"></p>
 </div>
 <div id="forward-reads-1" class="section level3">
@@ -481,7 +494,7 @@ save(dadaRs, file=&quot;dadaRs&quot;)</code></pre>
 <h3>Inspecting the returned dada-class object:</h3>
 <pre><code>dadaFs[[1]]
 dadaRs[[1]]</code></pre>
-<div id="section-4" class="section level31">
+<div id="section-6" class="section level31">
 <p class="heading"></p>
 </div>
 </div>
@@ -489,7 +502,7 @@ dadaRs[[1]]</code></pre>
 </div>
 <div id="construct-sequence-table" class="section level1">
 <h1>3. Construct sequence table</h1>
-<div id="section-5" class="section level31">
+<div id="section-7" class="section level31">
 <p class="heading"></p>
 </div>
 <div id="merge-forward-and-reverse-reads-and-construct-sequence-table" class="section level3">
