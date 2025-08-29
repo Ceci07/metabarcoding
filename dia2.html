@@ -1640,7 +1640,7 @@ filtRs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_R
 <pre><code>out &lt;- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(290,200), 
 maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=FALSE) #On Linux or Mac you can set multithread=TRUE
 
-save(out, file=&quot;out&quot;)</code></pre>
+(out, file=&quot;out&quot;)</code></pre>
 <div id="función-filterandtrim" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>filterAndTrim()</code></h4>
 <p>La función <code>filterAndTrim()</code> del paquete
@@ -1674,12 +1674,12 @@ puede ponerse TRUE para usar múltiples núcleos).</p>
 <div id="lecturas-forward-1" class="section level3">
 <h3>Lecturas Forward</h3>
 <pre><code>errF &lt;- learnErrors(filtFs, multithread=FALSE)
-save(errF, file=&quot;errF&quot;)</code></pre>
+(errF, file=&quot;errF&quot;)</code></pre>
 </div>
 <div id="lecturas-reverse-1" class="section level3">
 <h3>Lecturas Reverse</h3>
 <pre><code>errR &lt;- learnErrors(filtRs, multithread=FALSE)
-save(errR, file=&quot;errR&quot;)</code></pre>
+(errR, file=&quot;errR&quot;)</code></pre>
 <div id="función-learnerrors" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>learnErrors()</code></h4>
 <p>La función <code>learnErrors()</code> del paquete
@@ -1692,8 +1692,8 @@ entre verdaderas variantes biológicas y errores de secuenciación.</p>
 estimar el modelo de errores.</p>
 <p>multithread=FALSE: ejecuta el cálculo en un solo núcleo; en Linux/Mac
 puede ponerse en TRUE para acelerar el proceso.</p>
-<p>save(errF, file=“errF”): guarda el objeto con el modelo de errores en
-un archivo para reutilizarlo sin necesidad de recalcularlo. El modelo de
+<p>(errF, file=“errF”): guarda el objeto con el modelo de errores en un
+archivo para reutilizarlo sin necesidad de recalcularlo. El modelo de
 errores previamente guardado se puede recuperar en otra sesión de R
 utilizando la función <code>load()</code>.<br />
 De esta forma, no es necesario recalcular los perfiles de error cada vez
@@ -1709,7 +1709,7 @@ plotErrors(errR, nominalQ=TRUE)</code></pre>
 <h3>Dereplicar lecturas idénticas</h3>
 <pre><code>derepFs &lt;- derepFastq(filtFs, verbose=TRUE)
 names(derepFs) &lt;- sample.names
-save(derepFs, file= &quot;derepFs&quot;)
+(derepFs, file= &quot;derepFs&quot;)
 
 derepRs &lt;- derepFastq(filtRs, verbose=TRUE)
 names(derepRs) &lt;- sample.names
@@ -1864,7 +1864,7 @@ secuencias con la longitud biológica esperada.</p>
 <div id="eliminar-quimeras" class="section level3">
 <h3>Eliminar quimeras</h3>
 <pre><code>seqtab.nochim &lt;- removeBimeraDenovo(seqtab2, method=&quot;consensus&quot;, multithread=TRUE, verbose=TRUE)
-save(seqtab.nochim,file=&quot;seqtab.nochim&quot;)
+(seqtab.nochim,file=&quot;seqtab.nochim&quot;)
 dim(seqtab.nochim)
 sum(seqtab.nochim)/sum(seqtab2)</code></pre>
 <div id="función-removebimeradenovo" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
@@ -1930,9 +1930,81 @@ head(track)</code></pre>
 <p>Para mejorar la interpretación de la matriz <code>track</code>, se
 añaden nombres descriptivos a las columnas (etapas del pipeline) y a las
 filas (muestras).</p>
+<div id="section-10" class="section level31">
+<p class="heading"></p>
 </div>
 </div>
 </div>
+</div>
+</div>
+<div id="asignar-taxonomía" class="section level1">
+<h1>4. Asignar taxonomía</h1>
+<div id="section-11" class="section level31">
+<p class="heading"></p>
+<pre><code>taxa &lt;- assignTaxonomy(seqtab.nochim, &quot;ruta/a/silva_nr_v132_train_set.fa.gz&quot;, multithread=TRUE)</code></pre>
+</div>
+<div id="función-assigntaxonomy" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>assignTaxonomy()</code></h4>
+<p>La función <code>assignTaxonomy()</code> del paquete
+<strong>dada2</strong> se utiliza para <strong>asignar taxonomía a las
+variantes de secuencia exactas (ASVs)</strong> obtenidas después del
+filtrado, corrección de errores y eliminación de quimeras.</p>
+<p><strong>Descripción:</strong><br />
+- Compara cada secuencia de la tabla (<code>seqtab.nochim</code>) contra
+una <strong>base de datos de referencia taxonómica</strong> (por
+ejemplo, <strong>SILVA</strong>, <strong>RDP</strong> o
+<strong>Greengenes</strong>).<br />
+- Utiliza un clasificador basado en la probabilidad <em>Naïve Bayesian
+classifier</em>, entrenado con secuencias anotadas.<br />
+- Devuelve un objeto donde cada ASV queda anotada con su taxonomía
+jerárquica:<br />
+<strong>Reino → Filo → Clase → Orden → Familia → Género</strong></p>
+<p><strong>Parámetros principales:</strong><br />
+- <code>seqtab.nochim</code>: tabla de secuencias sin quimeras sobre la
+cual se asignará la taxonomía.<br />
+- <code>&quot;ruta/a/silva_nr_v132_train_set.fa.gz&quot;</code>: archivo de
+referencia previamente entrenado (en este ejemplo, SILVA v132).<br />
+- <code>multithread=TRUE</code>: permite usar múltiples núcleos para
+acelerar el proceso.</p>
+<p><strong>Resultado esperado:</strong><br />
+- Una matriz o data.frame donde:<br />
+- Cada fila corresponde a un <strong>ASV</strong>.<br />
+- Cada columna representa un nivel taxonómico.<br />
+- Las celdas contienen la clasificación más probable para cada
+secuencia.</p>
+</div>
+<pre><code>taxa &lt;- addSpecies(taxa, &quot;ruta/a/silva_species_assignment_v132.fa.gz&quot;)</code></pre>
+<div id="función-addspecies" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>addSpecies()</code></h4>
+<p>La función <code>addSpecies()</code> del paquete
+<strong>dada2</strong> se utiliza para <strong>afinar la asignación
+taxonómica hasta el nivel de especie</strong>, siempre que la base de
+datos de referencia lo permita.</p>
+<p><strong>Descripción:</strong><br />
+- Toma como entrada el objeto <code>taxa</code> previamente generado con
+<code>assignTaxonomy()</code>.<br />
+- Compara cada ASV contra una base de datos que contiene
+<strong>secuencias de referencia a nivel de especie</strong>.<br />
+- Asigna la especie más probable cuando existe una coincidencia exacta o
+muy cercana.</p>
+<p><strong>Parámetros principales:</strong><br />
+- <code>taxa</code>: objeto de taxonomía obtenido con
+<code>assignTaxonomy()</code>.<br />
+- <code>&quot;~/tax/silva_species_assignment_v132.fa.gz&quot;</code>: archivo de
+referencia con asignaciones a nivel de especie (en este caso, de la base
+SILVA v132).</p>
+<p><strong>Resultado esperado:</strong><br />
+- El objeto <code>taxa</code> se actualiza con una columna adicional
+llamada <strong>Especie</strong>, que contiene la anotación más probable
+para cada ASV.<br />
+- Si no hay coincidencia confiable, la celda queda vacía
+(<code>NA</code>).</p>
+<p><strong>Importancia:</strong><br />
+La asignación hasta especie puede ser muy útil para estudios clínicos o
+ecológicos detallados, aunque debe interpretarse con precaución ya que
+depende de la calidad y cobertura de la base de datos de referencia.</p>
+</div>
+<pre><code>save(taxa, file=&quot;taxa&quot;)</code></pre>
 </div>
 
 
