@@ -1498,9 +1498,25 @@ color: #343a40;
 <div id="section" class="section level19">
 <p class="heading"></p>
 </div>
+<div id="objetivos" class="section level1">
+<h1>Objetivos</h1>
+<div id="section-1" class="section level19">
+<p class="heading"></p>
+<ul>
+<li>Introducción práctica al paquete de análisis DADA2 a partir de un
+dataset publicado: <a href="https://doi.org/10.1038/s41522-020-0136-z">Zwirzitz, B., Wetzels,
+S.U., Dixon, E.D. et al. The sources and transmission routes of
+microbial populations throughout a meat processing facility. npj
+Biofilms Microbiomes 6, 26 (2020).</a>.</li>
+</ul>
+</div>
+<div id="section-2" class="section level19">
+<p class="heading"></p>
+</div>
+</div>
 <div id="paquetes" class="section level1">
 <h1>Paquetes</h1>
-<div id="section-1" class="section level19">
+<div id="section-3" class="section level19">
 <p class="heading"></p>
 <pre><code>library(dada2)
 library(ShortRead)
@@ -1511,7 +1527,9 @@ library(reshape2)</code></pre>
 datos de secuenciación de amplicones (ej. 16S, ITS). Permite filtrar
 lecturas, corregir errores y asignar taxonomía, obteniendo variantes de
 secuencia exactas (ASVs).<br />
-📖 <a href="https://bioconductor.org/packages/release/bioc/html/dada2.html">Documentación</a></p></li>
+📖 <a href="https://bioconductor.org/packages/release/bioc/html/dada2.html">Documentación</a><br />
+📑 <a href="https://doi.org/10.1038/nmeth.3869">Artículo (Nature
+Methods, 2016)</a></p></li>
 <li><p><strong>ShortRead</strong>: Proporciona funciones para importar,
 manipular y evaluar datos de secuenciación de lectura corta en formatos
 como FASTQ. Facilita el filtrado y las estadísticas de calidad.<br />
@@ -1526,14 +1544,14 @@ las funciones <code>melt()</code> y <code>cast()</code>. Muy útil para
 organizar datos antes de visualización o modelado.<br />
 📖 <a href="https://cran.r-project.org/web/packages/reshape2/index.html">Documentación</a></p></li>
 </ul>
-<div id="section-2" class="section level28">
+<div id="section-4" class="section level28">
 <p class="heading"></p>
 </div>
 </div>
 </div>
 <div id="filtrado-de-lecturas" class="section level1">
 <h1>1. Filtrado de lecturas</h1>
-<div id="section-3" class="section level28">
+<div id="section-5" class="section level28">
 <p class="heading"></p>
 </div>
 <div id="asegúrate-de-trabajar-en-la-carpeta-donde-están-los-archivos.-si-no-usa-setwdrutaalosarchivos." class="section level3">
@@ -1553,7 +1571,7 @@ presentes</h3>
 <h3>Leer archivos fastq forward y reverse</h3>
 <pre><code>fnFs &lt;- sort(list.files(path, pattern=&quot;_1.fastq&quot;, full.names = TRUE))
 fnRs &lt;- sort(list.files(path, pattern=&quot;_2.fastq&quot;, full.names = TRUE))</code></pre>
-<div id="función-sort" class="section level4">
+<div id="función-sort" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>sort()</code></h4>
 <p>En el flujo de trabajo, la función <code>sort()</code> se utiliza
 para <strong>ordenar alfabéticamente</strong> los nombres de los
@@ -1582,7 +1600,7 @@ formato: MUESTRANOMBRE_XXX.fastq</h3>
 <div id="lecturas-reverse" class="section level3">
 <h3>Lecturas reverse</h3>
 <pre><code>plotQualityProfile(fnRs[1:2])</code></pre>
-<div id="función-plotqualityprofile" class="section level4">
+<div id="función-plotqualityprofile" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>plotQualityProfile()</code></h4>
 <p>La función <code>plotQualityProfile()</code> del paquete
 <strong>dada2</strong> permite <strong>visualizar la calidad de las
@@ -1623,7 +1641,7 @@ filtRs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_R
 maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=FALSE) #On Linux or Mac you can set multithread=TRUE
 
 save(out, file=&quot;out&quot;)</code></pre>
-<div id="función-filterandtrim" class="section level4">
+<div id="función-filterandtrim" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>filterAndTrim()</code></h4>
 <p>La función <code>filterAndTrim()</code> del paquete
 <strong>dada2</strong> se utiliza para <strong>filtrar y
@@ -1641,16 +1659,16 @@ a Q=2 o menos.</p>
 comprimido.</p>
 <p>multithread=FALSE: ejecuta el proceso en un solo hilo (en Linux/Mac
 puede ponerse TRUE para usar múltiples núcleos).</p>
-<hr />
-<div id="section-4" class="section level53">
-<p class="heading"></p>
 </div>
+<hr />
+<div id="section-6" class="section level53">
+<p class="heading"></p>
 </div>
 </div>
 </div>
 <div id="dereplicar-aprender-errores-y-ejecutar-dada2" class="section level1">
 <h1>2. Dereplicar, aprender errores y ejecutar DADA2</h1>
-<div id="section-5" class="section level53">
+<div id="section-7" class="section level53">
 <p class="heading"></p>
 </div>
 <div id="lecturas-forward-1" class="section level3">
@@ -1662,7 +1680,7 @@ save(errF, file=&quot;errF&quot;)</code></pre>
 <h3>Lecturas Reverse</h3>
 <pre><code>errR &lt;- learnErrors(filtRs, multithread=FALSE)
 save(errR, file=&quot;errR&quot;)</code></pre>
-<div id="función-learnerrors" class="section level4">
+<div id="función-learnerrors" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>learnErrors()</code></h4>
 <p>La función <code>learnErrors()</code> del paquete
 <strong>dada2</strong> se utiliza para <strong>aprender los perfiles de
@@ -1696,7 +1714,7 @@ save(derepFs, file= &quot;derepFs&quot;)
 derepRs &lt;- derepFastq(filtRs, verbose=TRUE)
 names(derepRs) &lt;- sample.names
 save(derepRs, file= &quot;derepRs&quot;)</code></pre>
-<div id="función-derepfastq" class="section level4">
+<div id="función-derepfastq" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>derepFastq()</code></h4>
 <p>La función <code>derepFastq()</code> del paquete
 <strong>dada2</strong> se utiliza para <strong>colapsar lecturas
@@ -1717,7 +1735,7 @@ save(dadaFs, file=&quot;dadaFs&quot;)</code></pre>
 <h3>Lecturas Reverse</h3>
 <pre><code>dadaRs &lt;- dada(derepRs, err=errR, pool = TRUE , multithread=TRUE)
 save(dadaRs, file=&quot;dadaRs&quot;)</code></pre>
-<div id="función-dada" class="section level4">
+<div id="función-dada" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>dada()</code></h4>
 <p>La función <code>dada()</code> es el núcleo del paquete
 <strong>dada2</strong>, y se utiliza para realizar la <strong>inferencia
@@ -1742,7 +1760,7 @@ cálculo.</p>
 <pre><code>dadaFs[[1]]
 dadaRs[[1]]</code></pre>
 <hr />
-<div id="section-6" class="section level31">
+<div id="section-8" class="section level31">
 <p class="heading"></p>
 </div>
 </div>
@@ -1750,7 +1768,7 @@ dadaRs[[1]]</code></pre>
 </div>
 <div id="construir-la-tabla-de-secuencias" class="section level1">
 <h1>3. Construir la tabla de secuencias</h1>
-<div id="section-7" class="section level31">
+<div id="section-9" class="section level31">
 <p class="heading"></p>
 </div>
 <div id="unir-las-lecturas-forward-y-reverse-y-construir-la-tabla-de-secuencias" class="section level3">
@@ -1762,7 +1780,7 @@ save(mergers, file=&quot;mergers&quot;)</code></pre>
 <div id="inspeccionar-el-data.frame-de-fusiones-de-la-primera-muestra" class="section level3">
 <h3>Inspeccionar el data.frame de fusiones de la primera muestra</h3>
 <pre><code>head(mergers[[1]])</code></pre>
-<div id="función-mergepairs" class="section level4">
+<div id="función-mergepairs" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>mergePairs()</code></h4>
 <p>La función <code>mergePairs()</code> del paquete
 <strong>dada2</strong> se utiliza para <strong>unir las lecturas forward
@@ -1779,7 +1797,7 @@ amplicón (ASV), una versión de mayor resolución de la tabla de OTUs
 producida por otros métodos.</h3>
 <pre><code>seqtab &lt;- makeSequenceTable(mergers)
 save(seqtab, file=&quot;seqtab&quot;)</code></pre>
-<div id="función-makesequencetable" class="section level4">
+<div id="función-makesequencetable" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>makeSequenceTable()</code></h4>
 <p>La función <code>makeSequenceTable()</code> del paquete
 <strong>dada2</strong> se utiliza para <strong>construir la tabla de
@@ -1849,7 +1867,7 @@ secuencias con la longitud biológica esperada.</p>
 save(seqtab.nochim,file=&quot;seqtab.nochim&quot;)
 dim(seqtab.nochim)
 sum(seqtab.nochim)/sum(seqtab2)</code></pre>
-<div id="función-removebimeradenovo" class="section level4">
+<div id="función-removebimeradenovo" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>removeBimeraDenovo()</code></h4>
 <p>La función <code>removeBimeraDenovo()</code> del paquete
 <strong>dada2</strong> se utiliza para <strong>detectar y eliminar
@@ -1873,7 +1891,7 @@ meansequencelength &lt;- as.data.frame(table(nchar(getSequences(dna))))
 meansequencelength$Var1 &lt;- as.numeric(as.character(meansequencelength$Var1))
 meansequencelength$total &lt;- meansequencelength$Var1*meansequencelength$Freq
 sum(meansequencelength$total)/sum(meansequencelength$Freq)</code></pre>
-<div id="función-dnastringset" class="section level4">
+<div id="función-dnastringset" class="section level4" style="border: 2px solid #ffd60a; border-radius: 8px; padding: 10px; background-color: #fdffb6;">
 <h4>Función <code>DNAStringSet()</code></h4>
 <p>La función <code>DNAStringSet()</code> del paquete
 <strong>Biostrings</strong> se utiliza para crear un objeto
