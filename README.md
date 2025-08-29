@@ -4,7 +4,6 @@
 ## Lugar: Institut Pasteur de Montevideo - Uruguay  
 ### Responsables: Pablo Fresia, PhD y Tamara Fernández-Calero, PhD  
 
-Se trabajará con los datos del trabajo 
 
 ## Día 1
 
