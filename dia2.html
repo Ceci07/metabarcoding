@@ -1641,6 +1641,7 @@ a Q=2 o menos.</p>
 comprimido.</p>
 <p>multithread=FALSE: ejecuta el proceso en un solo hilo (en Linux/Mac
 puede ponerse TRUE para usar múltiples núcleos).</p>
+<hr />
 <div id="section-4" class="section level53">
 <p class="heading"></p>
 </div>
@@ -1740,6 +1741,7 @@ cálculo.</p>
 <h3>Inspeccionando el objeto dada:</h3>
 <pre><code>dadaFs[[1]]
 dadaRs[[1]]</code></pre>
+<hr />
 <div id="section-6" class="section level31">
 <p class="heading"></p>
 </div>
@@ -1800,21 +1802,23 @@ una matriz de conteos.</p>
 <p>Un paso de control de calidad importante consiste en verificar la
 <strong>longitud de las secuencias</strong> presentes en la tabla
 (<code>seqtab</code>).</p>
-<p>Lo habitual es observar una sola longitud dominante, correspondiente
-a la región de amplicón objetivo (por ejemplo, ~250–300 bp para 16S,
-dependiendo de los primers usados).</p>
-<p>Pueden aparecer unas pocas secuencias con longitudes atípicas (más
-cortas o más largas), que suelen ser artefactos y pueden eliminarse en
-pasos posteriores.</p>
 </div>
 </div>
-<div id="las-secuencias-que-son-mucho-más-largas-o-más-cortas-de-lo-esperado-pueden-ser-el-resultado-de-un-cebado-no-específico." class="section level3">
-<h3>Las secuencias que son mucho más largas o más cortas de lo esperado
-pueden ser el resultado de un cebado no específico.</h3>
-</div>
-<div id="puede-eliminar-las-secuencias-con-longitudes-no-objetivo-mediante-manipulaciones-en-r-base-de-la-tabla-de-secuencias." class="section level3">
-<h3>Puede eliminar las secuencias con longitudes no objetivo mediante
-manipulaciones en R base de la tabla de secuencias.</h3>
+<div id="notas-1" class="section level3">
+<h3>Notas</h3>
+<ul>
+<li><p>Lo habitual es observar una sola longitud dominante,
+correspondiente a la región de amplicón objetivo (por ejemplo, ~250–300
+bp para 16S, dependiendo de los primers usados).</p></li>
+<li><p>Pueden aparecer unas pocas secuencias con longitudes atípicas
+(más cortas o más largas), que suelen ser artefactos y pueden eliminarse
+en pasos posteriores.</p></li>
+<li><p>Las secuencias que son mucho más largas o más cortas de lo
+esperado pueden ser el resultado de unión inespecífica de los
+primers.</p></li>
+<li><p>Puede eliminar las secuencias con longitudes no
+objetivo.</p></li>
+</ul>
 <pre><code>seqtab2 &lt;- seqtab[,nchar(colnames(seqtab)) %in% seq(440,466)] #Insert target length
 save(seqtab2, file=&quot;seqtab2&quot;)</code></pre>
 <div id="filtrado-por-longitud-del-amplicón" class="section level4">
@@ -1962,7 +1966,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
