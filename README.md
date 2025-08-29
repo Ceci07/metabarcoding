@@ -6,7 +6,6 @@
 
 Se trabajará con los datos del trabajo 
 
-
 ## Día 1
 
 Teórico: Fundamentos subyacentes a la técnica de metabarcoding. Genes marcadores. Metabarcoding como herramienta aplicada. Introducción a la secuenciación masiva. 1hs.  
