@@ -32,16 +32,21 @@ Teórico - Práctico: Introducción al paquete mia: Creación de objetos treeSum
 
 Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado. 2hs.  
 
+[Tutorial 2]()
 
 ## Día 4
 
 Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversidad alfa, Métodos de estudio de la diversidad beta y visualización de los resultados.  4hs.  
 
+[Tutorial 3]()
 
 ## Día 5
 
 Teórico - Práctico: Abundancias diferenciales (Deseq2, ANCOM). 2 hs.   
 Taller: Interpretación de resultados y discusión.
+
+[Tutorial 4]()
+
 
 
 ## Evaluación
