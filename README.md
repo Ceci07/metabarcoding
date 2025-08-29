@@ -23,7 +23,7 @@ Teórico - Práctico: Introducción al paquete Phyloseq. Creación de objetos ph
 
 Teórico - Práctico: Árbol filogenético 1 hr.  
 
-[Tutorial 1](https://ceci07.github.io/metabarcoding/dia2.html).  
+[Tutorial 1](https://ceci07.github.io/metabarcoding/dia2.html)  
 
 
 ## Día 3
