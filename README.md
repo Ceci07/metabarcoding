@@ -1,7 +1,8 @@
 # TALLER DE ANÁLISIS DE DATOS DE METABARCODING
 
 ## Fecha: Del Lunes 1/9 al Viernes 5/9 del 2025 de 8:30 a 12:30  
-## Lugar: Institut Pasteur de Montevideo - Uruguay  
+## Lugar: Institut Pasteur de Montevideo - Uruguay 
+## Curso [PEDECIBA-Biología](https://www.pedeciba.edu.uy/es/curso/taller-de-analisis-de-datos-de-metabarcoding-2do-sem-2025/).   
 ### Responsables: Pablo Fresia, PhD y Tamara Fernández-Calero, PhD  
 
 
@@ -23,7 +24,7 @@ Teórico - Práctico: Introducción al paquete Phyloseq. Creación de objetos ph
 Teórico - Práctico: Árbol filogenético 1 hr.  
 
 [Tutorial 1](https://ceci07.github.io/metabarcoding/dia2.html)  
-
+[Tutorial 2]()
 
 ## Día 3
 
@@ -31,20 +32,21 @@ Teórico - Práctico: Introducción al paquete mia: Creación de objetos treeSum
 
 Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado. 2hs.  
 
-[Tutorial 2]()
+[Tutorial 3]()
 
 ## Día 4
 
 Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversidad alfa, Métodos de estudio de la diversidad beta y visualización de los resultados.  4hs.  
 
-[Tutorial 3]()
+[Tutorial 4]()
 
 ## Día 5
 
 Teórico - Práctico: Abundancias diferenciales (Deseq2, ANCOM). 2 hs.   
 Taller: Interpretación de resultados y discusión.
 
-[Tutorial 4]()
+[Tutorial 5]()
+
 
 
 
