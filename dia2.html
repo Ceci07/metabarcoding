@@ -1817,6 +1817,22 @@ región solapada suficiente y consistente.<br />
 Este paso es crucial en análisis de secuencias de amplicones, ya que la
 región resultante es de mayor calidad y cubre toda la zona de
 interés.</p>
+<ul>
+<li>sequence: la secuencia consenso resultante de la fusió o
+<em>merge</em> entre forward y reverse.</li>
+<li>abundance: el número de lecturas que dieron lugar a esa secuencia
+fusionada.</li>
+<li>forward: índice de la ASV en dadaFs que aportó la lectura
+forward.</li>
+<li>reverse: índice de la ASV en dadaRs que aportó la lectura
+reverse.</li>
+<li>nmatch: número de bases que coincidieron en la región solapada.</li>
+<li>nmismatch: número de discrepancias detectadas en la región
+solapada.</li>
+<li>nindel: número de inserciones/deleciones observadas.</li>
+<li>prefer: cuál de las dos lecturas (forward o reverse) se usó para
+resolver un conflicto en la fusión.</li>
+</ul>
 </div>
 </div>
 <div id="ahora-podemos-construir-una-tabla-de-variantes-de-secuencia-de-amplicón-asv-una-versión-de-mayor-resolución-de-la-tabla-de-otus-producida-por-otros-métodos." class="section level3">
@@ -1841,7 +1857,17 @@ En esta tabla, cada fila corresponde a una muestra y cada columna a una
 </div>
 <div id="inspeccionar-la-distribución-de-longitudes-de-secuencia" class="section level3">
 <h3>Inspeccionar la distribución de longitudes de secuencia</h3>
-<pre><code>table(nchar(getSequences(seqtab)))</code></pre>
+<pre><code>table(nchar(getSequences(seqtab)))
+
+seq_dis &lt;- table(nchar(getSequences(seqtab)))
+
+barplot(seq_dis,
+        col = &quot;lightblue&quot;,
+        border = &quot;darkblue&quot;,
+        main = &quot;Distribución de longitudes de ASVs&quot;,
+        xlab = &quot;Longitud de secuencia (bp)&quot;,
+        ylab = &quot;Número de ASVs&quot;)
+</code></pre>
 <div id="evaluación-de-longitudes-de-secuencia" class="section level4">
 <h4>Evaluación de longitudes de secuencia</h4>
 <p>Un paso de control de calidad importante consiste en verificar la
@@ -1864,7 +1890,7 @@ primers.</p></li>
 <li><p>Puede eliminar las secuencias con longitudes no
 objetivo.</p></li>
 </ul>
-<pre><code>seqtab2 &lt;- seqtab[,nchar(colnames(seqtab)) %in% seq(440,466)] #Insert target length
+<pre><code>seqtab2 &lt;- seqtab[,nchar(colnames(seqtab)) %in% seq(440,466)]
 save(seqtab2, file=&quot;seqtab2&quot;)</code></pre>
 <div id="filtrado-por-longitud-del-amplicón" class="section level4">
 <h4>Filtrado por longitud del amplicón</h4>
@@ -1876,8 +1902,8 @@ ensamblaje.</p>
 <p>colnames(seqtab): obtiene las secuencias (ASVs) como nombres de
 columna.</p>
 <p>nchar(…): calcula la longitud de cada secuencia.</p>
-<p>seq(440,466): define el rango esperado de longitudes (aquí, de 440 a
-466 bp).</p>
+<p>seq(440,466): define el rango esperado de longitudes (por ejemplo, de
+440 a 466 bp).</p>
 <p>%in%: selecciona solo aquellas secuencias cuya longitud cae dentro de
 ese rango.</p>
 <p>El resultado (seqtab2) es una nueva tabla que incluye únicamente las
@@ -1886,7 +1912,17 @@ secuencias con la longitud biológica esperada.</p>
 </div>
 <div id="verificar-nuevamente-la-distribución" class="section level3">
 <h3>Verificar nuevamente la distribución</h3>
-<pre><code>table(nchar(getSequences(seqtab2)))</code></pre>
+<pre><code>table(nchar(getSequences(seqtab2)))
+
+seq_dis2 &lt;- table(nchar(getSequences(seqtab2)))
+
+barplot(seq_dis2,
+        col = &quot;lightblue&quot;,
+        border = &quot;darkblue&quot;,
+        main = &quot;Distribución de longitudes de ASVs filtradas&quot;,
+        xlab = &quot;Longitud de secuencia (bp)&quot;,
+        ylab = &quot;Número de ASVs&quot;)
+</code></pre>
 </div>
 <div id="eliminar-quimeras" class="section level3">
 <h3>Eliminar quimeras</h3>
@@ -2034,9 +2070,28 @@ depende de la calidad y cobertura de la base de datos de referencia.</p>
 <pre><code>save(taxa, file=&quot;taxa&quot;)</code></pre>
 <p>La base de datos para la asignación de taxonomía pueden descargarse
 desde este <a href="https://zenodo.org/records/1172783">link</a>.<br />
-Puede explorar las versión mas reciente de la base de datos SILVA <a href>aquí</a>.</p>
+Puede explorar las versión mas reciente de la base de datos SILVA <a href="https://zenodo.org/records/3731176">aquí</a>.</p>
 <p>Por razones de tiempo la asignación taxonómica no se realizará
 durante el taller.</p>
+<div id="section-12" class="section level43">
+<p class="heading"></p>
+</div>
+</div>
+<div id="preguntas-a-responder-durante-el-taller" class="section level1">
+<h1>Preguntas a responder durante el taller</h1>
+<div id="section-13" class="section level43">
+<p class="heading"></p>
+<ol style="list-style-type: decimal">
+<li>¿Qué entiende por ASV?<br />
+</li>
+<li>¿Qué pasos son necesarios para la generación de las ASVs?<br />
+</li>
+<li>¿A qué podría atribuirse un número elevado de secuencias
+quiméricas?<br />
+</li>
+<li>¿Cómo se asigna taxonomía a los ASVs?</li>
+</ol>
+</div>
 </div>
 
 
