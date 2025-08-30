@@ -1504,7 +1504,8 @@ color: #343a40;
 <p class="heading"></p>
 <ul>
 <li>Introducción práctica al paquete de análisis DADA2 a partir de un
-dataset publicado: <a href="https://doi.org/10.1038/s41522-020-0136-z">Zwirzitz, B., Wetzels,
+dataset de secuenciación de amplicones del gen 16S del ARNr obtenido con
+Illumina MiSeq 300 pb PE, publicado por <a href="https://doi.org/10.1038/s41522-020-0136-z">Zwirzitz, B., Wetzels,
 S.U., Dixon, E.D. et al. The sources and transmission routes of
 microbial populations throughout a meat processing facility. npj
 Biofilms Microbiomes 6, 26 (2020).</a>.</li>
@@ -1777,13 +1778,15 @@ representativa.</p>
 usada en la inferencia.</p>
 <p>$err_in / $err_out: tasas de error utilizadas y corregidas en el
 proceso.</p>
-<p>$quals: distribución de calidades asociadas.</p>
 </div>
 </div>
 <div id="inspeccionando-el-objeto-dada" class="section level3">
 <h3>Inspeccionando el objeto dada:</h3>
 <pre><code>dadaFs[[1]]
-dadaRs[[1]]</code></pre>
+dadaRs[[1]]
+
+mean(dadaFs[[1]]$quality)
+mean(dadaRs[[1]]$qual)</code></pre>
 <hr />
 <div id="section-8" class="section level31">
 <p class="heading"></p>
@@ -2029,6 +2032,9 @@ ecológicos detallados, aunque debe interpretarse con precaución ya que
 depende de la calidad y cobertura de la base de datos de referencia.</p>
 </div>
 <pre><code>save(taxa, file=&quot;taxa&quot;)</code></pre>
+<p>La base de datos para la asignación de taxonomía pueden descargarse
+desde este <a href="https://zenodo.org/records/1172783">link</a>.<br />
+Puede explorar las versión mas reciente de la base de datos SILVA <a href>aquí</a>.</p>
 <p>Por razones de tiempo la asignación taxonómica no se realizará
 durante el taller.</p>
 </div>
