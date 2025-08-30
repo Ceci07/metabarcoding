@@ -1548,7 +1548,7 @@ de motivos, alineamientos y operaciones sobre secuencias.<br />
 usa setwd(“ruta/a/los/archivos”).</h3>
 <div id="ruta-y-listado-de-archivos" class="section level4">
 <h4>Ruta y listado de archivos</h4>
-<pre><code>path &lt;- getwd()</code></pre>
+<pre><code>path &lt;- setwd()</code></pre>
 </div>
 </div>
 <div id="verificar-si-la-ruta-es-correcta-y-si-todos-los-archivos-están-presentes" class="section level3">
@@ -1627,9 +1627,9 @@ filtRs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_R
 <div id="filtrar-lecturas" class="section level2">
 <h2>Filtrar lecturas</h2>
 <pre><code>out &lt;- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(290,200), 
-maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=FALSE) #On Linux or Mac you can set multithread=TRUE
+maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=FALSE) 
 
-(out, file=&quot;out&quot;)</code></pre>
+save(out, file=&quot;out&quot;)</code></pre>
 <div id="función-filterandtrim" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>filterAndTrim()</code></h4>
 <p>La función <code>filterAndTrim()</code> del paquete
@@ -1663,12 +1663,12 @@ puede ponerse TRUE para usar múltiples núcleos).</p>
 <div id="lecturas-forward-1" class="section level3">
 <h3>Lecturas Forward</h3>
 <pre><code>errF &lt;- learnErrors(filtFs, multithread=FALSE)
-(errF, file=&quot;errF&quot;)</code></pre>
+save(errF, file=&quot;errF&quot;)</code></pre>
 </div>
 <div id="lecturas-reverse-1" class="section level3">
 <h3>Lecturas Reverse</h3>
 <pre><code>errR &lt;- learnErrors(filtRs, multithread=FALSE)
-(errR, file=&quot;errR&quot;)</code></pre>
+save(errR, file=&quot;errR&quot;)</code></pre>
 <div id="función-learnerrors" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
 <h4>Función <code>learnErrors()</code></h4>
 <p>La función <code>learnErrors()</code> del paquete
@@ -1693,12 +1693,37 @@ que se ejecute el análisis.</p>
 <h3>Visualizar las tasas de error estimadas</h3>
 <pre><code>plotErrors(errF, nominalQ=TRUE)
 plotErrors(errR, nominalQ=TRUE)</code></pre>
+<div id="función-ploterrors" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>plotErrors()</code></h4>
+<p>La función <code>plotErrors()</code> del paquete
+<strong>dada2</strong> se utiliza para <strong>visualizar los perfiles
+de error aprendidos</strong> con la función
+<code>learnErrors()</code>.</p>
+<p><strong>Descripción:</strong><br />
+- Muestra la tasa observada de errores (puntos) en comparación con las
+tasas de error esperadas según el modelo (líneas).<br />
+- Cada gráfico corresponde a un tipo de sustitución de bases (A→C, A→G,
+etc.).<br />
+- Sirve como control de calidad para verificar que el modelo de errores
+se ajusta correctamente a los datos.</p>
+<p><strong>Parámetros comunes:</strong><br />
+- <code>err</code>: objeto de errores obtenido con
+<code>learnErrors()</code>.<br />
+- <code>nominalQ=TRUE</code>: agrega al gráfico las líneas
+correspondientes a los valores teóricos de calidad (Q-scores) para
+comparación.</p>
+<p><strong>Resultado esperado:</strong><br />
+Un gráfico donde las curvas del modelo (líneas) se alinean de forma
+razonable con los puntos observados. Esto indica que la estimación de
+errores es adecuada y puede usarse para la inferencia de variantes de
+secuencia exactas (ASVs).</p>
+</div>
 </div>
 <div id="dereplicar-lecturas-idénticas" class="section level3">
 <h3>Dereplicar lecturas idénticas</h3>
 <pre><code>derepFs &lt;- derepFastq(filtFs, verbose=TRUE)
 names(derepFs) &lt;- sample.names
-(derepFs, file= &quot;derepFs&quot;)
+save(derepFs, file= &quot;derepFs&quot;)
 
 derepRs &lt;- derepFastq(filtRs, verbose=TRUE)
 names(derepRs) &lt;- sample.names
@@ -1742,6 +1767,17 @@ en la detección de variantes poco abundantes (si se deja en FALSE, cada
 muestra se procesa de manera independiente).</p>
 <p>multithread=TRUE: permite usar múltiples núcleos para acelerar el
 cálculo.</p>
+<p>Un objeto de clase dada almacena la información de la ASVs a partir
+de las lecturas dereplicadas. Dentro de cada elemento se encuentra:</p>
+<p>$denoised: las secuencias inferidas como variantes reales (ASVs).</p>
+<p>$clustering: asignación de cada lectura a su secuencia
+representativa.</p>
+<p>$map: correspondencia entre lecturas originales y ASVs.</p>
+<p>$birth_subs / $birth_q: detalles de la primera diferencia de calidad
+usada en la inferencia.</p>
+<p>$err_in / $err_out: tasas de error utilizadas y corregidas en el
+proceso.</p>
+<p>$quals: distribución de calidades asociadas.</p>
 </div>
 </div>
 <div id="inspeccionando-el-objeto-dada" class="section level3">
@@ -1793,8 +1829,7 @@ save(seqtab, file=&quot;seqtab&quot;)</code></pre>
 secuencias</strong> a partir de los objetos resultantes de
 <code>mergePairs()</code>.<br />
 En esta tabla, cada fila corresponde a una muestra y cada columna a una
-<strong>variante de secuencia exacta (ASV)</strong>, de forma análoga a
-una matriz de conteos.</p>
+<strong>ASV</strong>, de forma análoga a una matriz de conteos.</p>
 </div>
 </div>
 <div id="verificar-el-número-de-variantes-de-secuencia" class="section level3">
@@ -1853,7 +1888,7 @@ secuencias con la longitud biológica esperada.</p>
 <div id="eliminar-quimeras" class="section level3">
 <h3>Eliminar quimeras</h3>
 <pre><code>seqtab.nochim &lt;- removeBimeraDenovo(seqtab2, method=&quot;consensus&quot;, multithread=TRUE, verbose=TRUE)
-(seqtab.nochim,file=&quot;seqtab.nochim&quot;)
+save(seqtab.nochim,file=&quot;seqtab.nochim&quot;)
 dim(seqtab.nochim)
 sum(seqtab.nochim)/sum(seqtab2)</code></pre>
 <div id="función-removebimeradenovo" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
