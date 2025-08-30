@@ -8,11 +8,11 @@
 
 ## Día 1
 
-Teórico: Fundamentos subyacentes a la técnica de metabarcoding. Genes marcadores. Metabarcoding como herramienta aplicada. Introducción a la secuenciación masiva. 1hs.  
+Teórico: Fundamentos subyacentes a la técnica de metabarcoding. Genes marcadores. Metabarcoding como herramienta aplicada. Introducción a la secuenciación masiva. 1 hs.  
 
-Teórico: Pasos básicos para el análisis de datos de metabarcoding. 1hs.  
+Teórico: Pasos básicos para el análisis de datos de metabarcoding. 1 hs.  
 
-Práctico: Chequeo de la instalación del software necesario y acceso a datos con los que vamos a trabajar.  Repaso de R. 2hs.  
+Práctico: Chequeo de la instalación del software necesario y acceso a datos con los que vamos a trabajar.  Repaso de R. 2 hs.  
 
 
 ## Día 2
@@ -28,15 +28,15 @@ Teórico - Práctico: Árbol filogenético 1 hr.
 
 ## Día 3
 
-Teórico - Práctico: Introducción al paquete mia: Creación de objetos treeSummarizedExperiment y propiedades. 2hs.  
+Teórico - Práctico: Introducción al paquete mia: Creación de objetos treeSummarizedExperiment y propiedades. 2 hs.  
 
-Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado. 2hs.  
+Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado. 2 hs.  
 
 [Tutorial 3]()
 
 ## Día 4
 
-Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversidad alfa, Métodos de estudio de la diversidad beta y visualización de los resultados.  4hs.  
+Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversidad alfa, Métodos de estudio de la diversidad beta y visualización de los resultados.  4 hs.  
 
 [Tutorial 4]()
 
@@ -46,8 +46,6 @@ Teórico - Práctico: Abundancias diferenciales (Deseq2, ANCOM). 2 hs.
 Taller: Interpretación de resultados y discusión.
 
 [Tutorial 5]()
-
-
 
 
 ## Evaluación
