@@ -1494,7 +1494,6 @@ h3 {
 color: #343a40; 
 }
 </style>
-<p>´</p>
 <div id="section" class="section level19">
 <p class="heading"></p>
 </div>
@@ -1522,17 +1521,13 @@ Biofilms Microbiomes 6, 26 (2020).</a>.</li>
 <pre><code>library(dada2)
 library(Biostrings)</code></pre>
 <ul>
-<li><p><strong>dada2</strong>: Herramienta principal para el análisis de
+<li><strong>dada2</strong>: Herramienta principal para el análisis de
 datos de secuenciación de amplicones (ej. 16S, ITS). Permite filtrar
 lecturas, corregir errores y asignar taxonomía, obteniendo variantes de
 secuencia exactas (ASVs).<br />
 📖 <a href="https://bioconductor.org/packages/release/bioc/html/dada2.html">Documentación</a><br />
 📑 <a href="https://doi.org/10.1038/nmeth.3869">Artículo (Nature
-Methods, 2016)</a></p></li>
-<li><p><strong>Biostrings</strong>: Ofrece estructuras y funciones para
-manejar secuencias biológicas (ADN, ARN y proteínas). Permite búsquedas
-de motivos, alineamientos y operaciones sobre secuencias.<br />
-📖 <a href="https://bioconductor.org/packages/release/bioc/html/Biostrings.html">Documentación</a></p></li>
+Methods, 2016)</a></li>
 </ul>
 <div id="section-4" class="section level28">
 <p class="heading"></p>
@@ -1628,7 +1623,7 @@ filtRs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_R
 <div id="filtrar-lecturas" class="section level2">
 <h2>Filtrar lecturas</h2>
 <pre><code>out &lt;- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(290,200), 
-maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=FALSE) 
+       maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=FALSE) 
 
 save(out, file=&quot;out&quot;)</code></pre>
 <div id="función-filterandtrim" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
@@ -1649,6 +1644,8 @@ a Q=2 o menos.</p>
 comprimido.</p>
 <p>multithread=FALSE: ejecuta el proceso en un solo hilo (en Linux/Mac
 puede ponerse TRUE para usar múltiples núcleos).</p>
+<p>Se puede utilizar <em>trimLeft</em> para remover secuencias de
+primers.</p>
 </div>
 <hr />
 <div id="section-6" class="section level53">
@@ -1682,12 +1679,6 @@ entre verdaderas variantes biológicas y errores de secuenciación.</p>
 estimar el modelo de errores.</p>
 <p>multithread=FALSE: ejecuta el cálculo en un solo núcleo; en Linux/Mac
 puede ponerse en TRUE para acelerar el proceso.</p>
-<p>(errF, file=“errF”): guarda el objeto con el modelo de errores en un
-archivo para reutilizarlo sin necesidad de recalcularlo. El modelo de
-errores previamente guardado se puede recuperar en otra sesión de R
-utilizando la función <code>load()</code>.<br />
-De esta forma, no es necesario recalcular los perfiles de error cada vez
-que se ejecute el análisis.</p>
 </div>
 </div>
 <div id="visualizar-las-tasas-de-error-estimadas" class="section level3">
