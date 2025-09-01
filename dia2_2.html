@@ -1479,7 +1479,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Día 2 - TALLER DE ANÁLISIS DE DATOS DE
 METABARCODING</h1>
-<h3 class="subtitle">Paquete ¨Phyloseq</h3>
+<h3 class="subtitle">Paquete Phyloseq</h3>
 
 </div>
 
@@ -1519,6 +1519,8 @@ Biofilms Microbiomes 6, 26 (2020).</a>.</li>
 <h1>Paquetes</h1>
 <div id="section-3" class="section level19">
 <p class="heading"></p>
+<p>Instalar los paquetes que no se encuentran instalados en el
+sistema.</p>
 <pre><code>library(ggplot2)
 library(phyloseq)
 library(ranacapa)
@@ -1572,8 +1574,7 @@ por muestra.<br />
 de muestreo, tratamiento).<br />
 </li>
 <li><strong>tax_table()</strong>: tabla taxonómica con la clasificación
-jerárquica (Reino → Filo → Clase → Orden → Familia → Género →
-Especie).</li>
+jerárquica (Reino, Filo, Clase, Orden, Familia, Género, Especie).</li>
 </ul>
 <p>El objeto resultante (<code>physeq</code>) es un contenedor que
 facilita el manejo conjunto de abundancias, taxonomía y metadatos,
@@ -1621,8 +1622,13 @@ vegan::rarecurve().La diferencia es que ggrare() devuelve los resultados
 en un formato compatible con ggplot2, lo que permite personalizar y
 mejorar la visualización.</p>
 </div>
+<div id="los-conceptos-de-diveridad-de-las-especies-fueron-introducidos-por-whittaker-1972." class="section level3">
+<h3>Los conceptos de diveridad de las especies fueron introducidos por
+<a href="https://onlinelibrary.wiley.com/doi/10.2307/1218190">Whittaker
+(1972)</a>.</h3>
 <div id="section-8" class="section level36">
 <p class="heading"></p>
+</div>
 </div>
 </div>
 <div id="diversidad-alfa" class="section level1">
@@ -1687,11 +1693,11 @@ gráfico (aquí “Sampling.position”).</p>
 <h1>3. Diversidad beta</h1>
 <div id="section-11" class="section level36">
 <p class="heading"></p>
-<pre><code>## 1) Transformar a abundancias relativas
+<pre><code>#Transformar a abundancias relativas
 
 ps.prop &lt;- transform_sample_counts(ps_subset, function(x) x / sum(x))
 
-## 2) Ordinar con NMDS (Bray-Curtis) y graficar
+Ordinar con NMDS (Bray-Curtis) y graficar
 set.seed(123)  # reproducibilidad del NMDS
 ord.nmds.bray &lt;- ordinate(ps.prop, method = &quot;NMDS&quot;, distance = &quot;bray&quot;)
 
@@ -1705,29 +1711,28 @@ ordplot &lt;- plot_ordination(
   theme_bw() +
   theme(text = element_text(size = 16))
 
-## 3) Agregar elipses por grupo (Sampling.position)
+#Agregar elipses por grupo (en este caso, Sampling.position)
 p_ord &lt;- ordplot +
   labs(colour = &quot;Sampling.position&quot;, fill = &quot;Sampling.position&quot;, shape = &quot;Sampling.position&quot;) +
   ggforce::geom_mark_ellipse(aes(label = Sampling.position, fill = Sampling.position)) +
   theme(legend.position = &quot;none&quot;)
 
-## 4) PERMANOVA (Bray-Curtis) con metadatos
+#PERMANOVA (Bray-Curtis) con metadatos
 metadata &lt;- as(sample_data(ps_subset), &quot;data.frame&quot;)
 
-# Asegurar que el orden de muestras en metadata coincide con ps_subset (opcional/recomendado)
-# metadata &lt;- metadata[sample_names(ps_subset), , drop = FALSE]
+metadata &lt;- metadata[sample_names(ps_subset), , drop = FALSE]
 
 dist.bc &lt;- phyloseq::distance(ps_subset, method = &quot;bray&quot;)
 permanova &lt;- vegan::adonis2(dist.bc ~ Sampling.position, data = metadata)
 pval &lt;- permanova$`Pr(&gt;F)`[1]
 
-## 5) Función helper para &quot;estrellitas&quot;
+#Función para agregar asteriscos
 p_stars &lt;- function(p) {
   if (is.na(p)) return(&quot;&quot;)
   if (p &lt; 0.001) &quot;***&quot; else if (p &lt; 0.01) &quot;**&quot; else if (p &lt; 0.05) &quot;*&quot; else &quot;ns&quot;
 }
 
-## 6) Etiqueta con p-valor
+#Etiqueta con p-valor
 lab &lt;- sprintf(&quot;PERMANOVA (Bray–Curtis): p = %.3g  %s&quot;, pval, p_stars(pval))
 
 p_ord_annot &lt;- p_ord +
