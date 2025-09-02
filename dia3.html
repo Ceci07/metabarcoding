@@ -1502,8 +1502,8 @@ color: #343a40;
 <div id="section-1" class="section level19">
 <p class="heading"></p>
 <ul>
-<li>Introducción práctica al paquete de análisis <em>mia</em>
-(Microbiome Analysis)</li>
+<li>Introducción práctica a los paquetes de análisis con
+<em>phyloseq</em> y <em>mia</em> (Microbiome Analysis).</li>
 </ul>
 </div>
 <div id="descripción-general" class="section level3">
@@ -1549,19 +1549,10 @@ Microbiome Analysis (OMA)</a></h3>
 <p class="heading"></p>
 <pre><code>library(ampvis2)
 library(mia)
-library(svglite)
 library(miaViz)
 library(ggplot2)
-library(Biostrings)
 library(phyloseq)
-library(ANCOMBC)
-library(tidyr)
-library(patchwork)
-library(ggsignif)
-library(scater)
 library(ggpubr)
-library(reshape2)
-library(RColorBrewer)
 library(phyloseq)</code></pre>
 <div id="section-4" class="section level28">
 <p class="heading"></p>
@@ -1587,19 +1578,55 @@ row.names(sample.metadata) &lt;- sample.metadata$Run</code></pre>
 <h3>Filtrar los datos en base a los metadatos para realizar las
 comparaciones.</h3>
 <pre><code>ps &lt;- subset_samples(physeq, Sampling.position %in% c(&quot;Anal swab&quot;,&quot;Sticking&quot;))</code></pre>
+<div id="función-subset_samples" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>subset_samples()</code></h4>
+<p>En el flujo de trabajo, la función <code>subset_samples()</code> del
+paquete <strong>phyloseq</strong> se utiliza para <strong>filtrar un
+objeto <code>phyloseq</code></strong> y conservar únicamente las
+muestras que cumplen con una condición definida por el usuario en los
+metadatos (<code>sample_data</code>).</p>
+</div>
+<div id="section-6" class="section level38">
+<p class="heading"></p>
+</div>
+</div>
+</div>
+<div id="características-de-las-muestras" class="section level1">
+<h1>2. Características de las muestras</h1>
+<div id="section-7" class="section level38">
+<p class="heading"></p>
 </div>
 <div id="con-cuántas-muestras-estamos-trabajando" class="section level3">
 <h3>¿Con cuántas muestras estamos trabajando?</h3>
 <pre><code>nsamples(ps)</code></pre>
+<div id="función-nsamples" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>nsamples()</code></h4>
+<p>En el flujo de trabajo, la función <code>nsamples()</code> se utiliza
+para <strong>contar el número total de muestras</strong> que contiene un
+objeto de clase <code>phyloseq</code>.</p>
+</div>
 </div>
 <div id="con-cuántos-asvs-contamos" class="section level3">
 <h3>¿Con cuántos ASVs contamos?</h3>
 <pre><code>ntaxa(ps)</code></pre>
+<div id="función-ntaxa" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>ntaxa()</code></h4>
+<p>En el flujo de trabajo, la función <code>ntaxa()</code> se utiliza
+para <strong>contar el número total de taxones (ASVs/OTUs)</strong>
+presentes en un objeto de clase <code>phyloseq</code>.</p>
+</div>
 </div>
 <div id="cuántas-lecturas-hay-en-cada-una-de-las-muestras-con-las-que-estamos-trabajando" class="section level3">
 <h3>¿Cuántas lecturas hay en cada una de las muestras con las que
 estamos trabajando?</h3>
 <pre><code>sample_sums(ps)</code></pre>
+<div id="función-sample_sums" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>sample_sums()</code></h4>
+<p>En el flujo de trabajo, la función <code>sample_sums()</code> se
+utiliza para <strong>calcular el número total de lecturas
+(reads)</strong> que tiene cada muestra dentro de un objeto de clase
+<code>phyloseq</code>.</p>
+</div>
 </div>
 <div id="con-qué-frecuencia-está-presente-cada-uno-de-los-asvs" class="section level3">
 <h3>¿Con qué frecuencia está presente cada uno de los ASVs?</h3>
@@ -1608,12 +1635,215 @@ estamos trabajando?</h3>
 <div id="veamos-la-distribución-de-los-asvs-por-muestra" class="section level3">
 <h3>Veamos la distribución de los ASVs por muestra</h3>
 <pre><code>reads_per_ASV&lt;-data.frame(nreads=sort(taxa_sums(ps),TRUE), SVs= 1:ntaxa(ps))</code></pre>
+<div id="función-taxa_sums" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>taxa_sums()</code></h4>
+<p>En el flujo de trabajo, la función <code>taxa_sums()</code> se
+utiliza para <strong>calcular el número total de lecturas asociadas a
+cada taxón (ASV/OTU)</strong> dentro de un objeto de clase
+<code>phyloseq</code>.</p>
+</div>
 </div>
 <div id="visualizar-gráficamente" class="section level3">
 <h3>Visualizar gráficamente</h3>
 <pre><code>ggplot(data = reads_per_ASV, aes(x = SVs, y = nreads)) +
         geom_area (stat = &quot;identity&quot;, fill = &quot;#69BE28&quot;) +
         scale_x_log10()</code></pre>
+</div>
+<div id="veamos-la-distribución-de-lecturas-por-muestra" class="section level3">
+<h3>Veamos la distribución de lecturas por muestra</h3>
+<pre><code>reads_per_sample &lt;- data.frame(
+        nreads = sort(sample_sums(ps), TRUE),
+        samples = 1:nsamples(ps),
+        type = &quot;Samples&quot;)
+
+
+ggplot(data = reads_per_sample , aes (x = samples, y = nreads)) +
+        geom_bar (stat = &quot;identity&quot;, fill = &quot;#69BE28&quot;)
+</code></pre>
+</div>
+<div id="transformar-conteos-a-conteos-relativos" class="section level3">
+<h3>Transformar conteos a conteos relativos</h3>
+<pre><code>ps.prop &lt;- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))</code></pre>
+<div id="función-transform_sample_counts" class="section level4" style="border: 2px solid #2a9d8f; border-radius: 8px; padding: 10px; background-color: #f0fdf4;">
+<h4>Función <code>transform_sample_counts()</code></h4>
+<p>En el flujo de trabajo, la función
+<code>transform_sample_counts()</code> del paquete
+<strong>phyloseq</strong> se utiliza para <strong>aplicar una
+transformación a los conteos de cada muestra</strong> de un objeto
+<code>phyloseq</code>.</p>
+</div>
+</div>
+<div id="cuántas-lecturas-hay-en-cada-una-de-las-muestras-con-las-que-estamos-trabajando-1" class="section level3">
+<h3>¿Cuántas lecturas hay en cada una de las muestras con las que
+estamos trabajando?</h3>
+<pre><code>apply(otu_table(ps.prop), 1,sum)</code></pre>
+<div id="section-8" class="section level25">
+<p class="heading"></p>
+</div>
+</div>
+</div>
+<div id="análisis-por-asvs" class="section level1">
+<h1>3. Análisis por ASVs</h1>
+<div id="section-9" class="section level25">
+<p class="heading"></p>
+</div>
+<div id="ranking-de-abundancias" class="section level3">
+<h3>1. Ranking de abundancias</h3>
+<pre><code>obj &lt;- ps</code></pre>
+</div>
+<div id="cambiamos-la-orientación-de-la-otu_table" class="section level3">
+<h3>2.Cambiamos la orientación de la otu_table</h3>
+<pre><code>t(otu_table(obj)) -&gt; otu_table(obj)</code></pre>
+</div>
+<div id="extraemos-las-tablas" class="section level3">
+<h3>3. Extraemos las tablas</h3>
+<pre><code>otutable &lt;- data.frame(OTU = rownames(phyloseq::otu_table(obj)@.Data),
+                       phyloseq::otu_table(obj)@.Data,
+                       phyloseq::tax_table(obj)@.Data,
+                       check.names = FALSE
+)</code></pre>
+</div>
+<div id="extraemos-la-metadada" class="section level3">
+<h3>4. Extraemos la metadada</h3>
+<pre><code>metadata &lt;- data.frame(phyloseq::sample_data(obj), 
+                       check.names = FALSE
+)
+metadata &lt;- data.frame(metadata, BC=rownames(metadata))
+metadata &lt;- metadata[,c(1,2,3)]</code></pre>
+</div>
+<div id="ampvis2-requiere-que-1-los-rangos-taxonómicos-sean-siete-y-vayan-de-kingdom-a-species-y-2-la-primera-columna-de-la-metadata-sea-el-identificador-de-cada-muestra.-entonces-duplicamos-la-columna-género-y-le-cambiamos-el-nombre-a-especie" class="section level3">
+<h3>5. ampvis2 requiere que 1) los rangos taxonómicos sean siete y vayan
+de Kingdom a Species y 2) la primera columna de la metadata sea el
+identificador de cada muestra. Entonces duplicamos la columna Género y
+le cambiamos el nombre a Especie</h3>
+<pre><code>otutable$Species = otutable$Genus</code></pre>
+</div>
+<div id="finalmente-generamos-el-objeto-ampvis" class="section level3">
+<h3>6. Finalmente generamos el objeto ampvis</h3>
+<pre><code>av2 &lt;- amp_load(otutable[,1:9], metadata) # columns selected must be the column named OTU plus all samples</code></pre>
+<pre><code>amp_rankabundance(av2, group_by = &quot;Sampling.position&quot;) +
+  labs(title=&quot;Illumina 16S&quot;)</code></pre>
+<div id="función-amp_load" class="section level4" style="border: 2px solid #0d3b66; border-radius: 8px; padding: 10px; background-color: #cae9ff;">
+<h4>Función <code>amp_load()</code></h4>
+<p>En el flujo de trabajo, la función <code>amp_load()</code> del
+paquete <strong>ampvis2</strong> se utiliza para <strong>crear un objeto
+de clase <code>ampvis2</code></strong> a partir de dos insumos
+principales:<br />
+1. Una tabla de abundancia (OTU table) que contenga las lecturas por
+taxón y las clasificaciones taxonómicas.<br />
+2. Una tabla de metadatos (metadata) con la información asociada a cada
+muestra.</p>
+</div>
+</div>
+<div id="barplot-de-las-asvs-para-mostrar-exito-de-la-clasificacion" class="section level3">
+<h3>7. Barplot de las ASVs para mostrar exito de la clasificacion</h3>
+<div id="por-genero" class="section level4">
+<h4>Por Genero</h4>
+<pre><code>p1 &lt;- plot_bar(ps.prop, x = &quot;sample_Sample&quot;, fill = &quot;Genus&quot;) + facet_wrap( ~
+                                                                                   Sampling.position, scales = &quot;free_x&quot;) + theme(legend.position = &quot;none&quot;)
+p1 &lt;- p1 + geom_bar(aes(color = Genus, fill = Genus),
+                    stat = &quot;identity&quot;,
+                    position = &quot;stack&quot;)</code></pre>
+<p>Hacer lo mismo<br />
+- Por Faamilia<br />
+- Por Orden<br />
+- Por Clase<br />
+- Por Filo</p>
+</div>
+</div>
+<div id="agrupar-los-gráficos" class="section level3">
+<h3>8. Agrupar los gráficos</h3>
+<pre><code>ggarrange( p1, p2, p3, p4, p5, 
+          labels = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;),
+          ncol = 2, nrow = 3)</code></pre>
+<div id="section-10" class="section level38">
+<p class="heading"></p>
+</div>
+</div>
+</div>
+<div id="análisis-por-grupos-taxonómicos" class="section level1">
+<h1>4. Análisis por grupos taxonómicos</h1>
+<div id="section-11" class="section level38">
+<p class="heading"></p>
+</div>
+<div id="cargado-del-experimento-en-objeto-mia" class="section level3">
+<h3>1. Cargado del experimento en objeto mia</h3>
+<pre><code>tse &lt;- makeTreeSummarizedExperimentFromPhyloseq(ps) </code></pre>
+</div>
+<div id="calculo-de-abundancias-relativas" class="section level3">
+<h3>2. calculo de abundancias relativas</h3>
+<pre><code>tse &lt;- transformSamples(tse, method = &quot;relabundance&quot;)
+tse &lt;- addTaxonomyTree(tse)</code></pre>
+</div>
+<div id="aglomeración-por-género-manteniendo-los-na" class="section level3">
+<h3>3. Aglomeración por género manteniendo los NA</h3>
+<pre><code>tse_genus &lt;- agglomerateByRank(tse, rank = &quot;Genus&quot;)
+tse_genus_notNA &lt;- tse_genus[!is.na(rowData(tse_genus)$Genus), ]</code></pre>
+<ul>
+<li>Aglomeración por familia manteniendo los NA<br />
+</li>
+<li>Aglomeración por orden manteniendo los NA<br />
+</li>
+<li>Aglomeración por clase manteniendo los NA<br />
+</li>
+<li>Aglomeración por filo manteniendo los NA</li>
+</ul>
+</div>
+<div id="análisis-de-abundancias" class="section level3">
+<h3>4. Análisis de abundancias</h3>
+<div id="géneros-mas-abundantes" class="section level4">
+<h4>Géneros mas abundantes</h4>
+<pre><code>auxPlot &lt;- tse_genus_notNA
+rownames(auxPlot) &lt;- sub(&quot;Genus:&quot;,&quot;&quot;,rownames(auxPlot))
+
+p1 &lt;- plotAbundanceDensity(auxPlot, layout = &quot;jitter&quot;, abund_values = &quot;relabundance&quot;,
+                     n = 20, point_size=1, point_shape=19, point_alpha=0.5, colour_by=&quot;Farmer&quot;) + 
+  scale_x_log10(label=scales::percent)</code></pre>
+<ul>
+<li>Familias mas abundantes<br />
+</li>
+<li>Ordenes mas abundantes<br />
+</li>
+<li>Clases mas abundantes<br />
+</li>
+<li>Filos mas abundantes</li>
+</ul>
+</div>
+<div id="función-plotabundancedensity" class="section level4" style="border: 2px solid #0d3b66; border-radius: 8px; padding: 10px; background-color: #cae9ff;">
+<h4>Función <code>plotAbundanceDensity()</code></h4>
+<p>En el flujo de trabajo, la función
+<code>plotAbundanceDensity()</code> del paquete <strong>miaViz</strong>
+se utiliza para <strong>visualizar la distribución de abundancias de los
+taxones más comunes en un objeto
+<code>TreeSummarizedExperiment</code></strong>.<br />
+Este tipo de gráfico permite identificar cuáles taxones son dominantes y
+cómo varía su abundancia relativa entre las muestras o grupos
+definidos.</p>
+</div>
+<pre><code>ggarrange(p2, p3, p4, p5, 
+          labels = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;),
+          ncol = 2, nrow = 2)</code></pre>
+<div id="prevalence" class="section level4">
+<h4>Prevalence</h4>
+<pre><code>rowData(altExp(tse, &quot;Phylum&quot;))$prevalence &lt;-
+        getPrevalence(
+                altExp(tse, &quot;Phylum&quot;),
+                detection = 1 / 100,
+                sort = FALSE,
+                abund_values = &quot;counts&quot;,
+                as_relative = TRUE
+        )</code></pre>
+</div>
+<div id="función-getprevalence" class="section level4" style="border: 2px solid #0d3b66; border-radius: 8px; padding: 10px; background-color: #cae9ff;">
+<h4>Función <code>getPrevalence()</code></h4>
+<p>En el flujo de trabajo, la función <code>getPrevalence()</code> del
+paquete <strong>mia</strong> se utiliza para <strong>calcular la
+prevalencia de los taxones</strong> en un objeto
+<code>TreeSummarizedExperiment</code> (TSE).<br />
+La <strong>prevalencia</strong> se define como la proporción de muestras
+en las que un taxón está presente por encima de un umbral mínimo de
+detección.</p>
+</div>
 </div>
 </div>
 
