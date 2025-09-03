@@ -31,13 +31,13 @@ Teórico - Práctico: Introducción al paquete mia: Creación de objetos treeSum
 
 Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado. 2 hs.  
 
-[Tutorial 3](https://ceci07.github.io/metabarcoding/dia3.html)
+[Tutorial 2](https://ceci07.github.io/metabarcoding/dia3.html)
 
 ## Día 4
 
 Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversidad alfa, Métodos de estudio de la diversidad beta y visualización de los resultados.  4 hs.  
 
-[Tutorial 4](https://ceci07.github.io/metabarcoding/dia4.html)
+[Tutorial 3](https://ceci07.github.io/metabarcoding/dia4.html)
 
 
 ## Día 5
@@ -45,7 +45,7 @@ Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversida
 Teórico - Práctico: Abundancias diferenciales (Deseq2, ANCOM). 2 hs.   
 Taller: Interpretación de resultados y discusión.
 
-[Tutorial 5]()
+[Tutorial 4]()
 
 
 ## Evaluación
