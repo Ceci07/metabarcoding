@@ -37,7 +37,7 @@ Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado
 
 Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversidad alfa, Métodos de estudio de la diversidad beta y visualización de los resultados.  4 hs.  
 
-[Tutorial 4](https://ceci07.github.io/metabarcoding/dia2_2.html)
+[Tutorial 4](https://ceci07.github.io/metabarcoding/dia4.html)
 
 
 ## Día 5
