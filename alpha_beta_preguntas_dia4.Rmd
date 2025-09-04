@@ -1,0 +1,206 @@
+---
+title: "Metabarcoding – Alfa y Beta Diversidad (Tutorial en Preguntas)"
+author: "Curso Introductorio"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: readable
+  pdf_document:
+    toc: true
+    toc_depth: 3
+---
+
+> **Cómo usar este material**  
+> Este documento complementa el tutorial introductorio y reestructura el análisis de **alfa** y **beta diversidad** en forma de **preguntas guiadas**. No requiere rarefacción; usamos relativas (Bray–Curtis) y CLR (Aitchison) de acuerdo con buenas prácticas composicionales. Incluye PCoA/NMDS, PERMANOVA y análisis de dispersión entre grupos.
+
+## 0) Preparación
+
+```{r}
+# install.packages(c("tidyverse","ggplot2"))
+# if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+# BiocManager::install(c("phyloseq","mia","TreeSummarizedExperiment","microbiome","vegan","ape","Biostrings"))
+
+library(tidyverse)
+library(phyloseq)
+library(mia)
+library(TreeSummarizedExperiment)
+library(microbiome)
+library(vegan)
+library(ape)
+library(Biostrings)
+set.seed(123)
+```
+
+---
+
+# P1. ¿Cómo preparamos los datos de entrada?
+**Objetivo.** Cargar `physeq.rds`, convertir a **TSE** con `mia::convertFromPhyloseq()`, **guardar secuencias desde `rownames(tse)` en `referenceSeq(tse)`**, renombrar *features* a `ASV#` y crear el subset de 8 muestras (*anal swab* y *sticking*).
+
+```{r}
+ps <- readRDS("physeq.rds")
+
+tse <- mia::convertFromPhyloseq(ps)
+seqs <- rownames(tse)
+mia::referenceSeq(tse) <- DNAStringSet(seqs)
+
+old_ids <- rownames(tse); new_ids <- paste0("ASV", seq_along(old_ids))
+rownames(tse) <- new_ids
+rowData(tse)$old_id <- old_ids
+rowData(tse)$sequence <- as.character(mia::referenceSeq(tse))
+
+candidate_cols <- colnames(colData(tse))
+name_hits <- grep("type|sample|source|body|material|specimen|site|toma|muestra|origen",
+                  candidate_cols, ignore.case = TRUE, value = TRUE)
+content_hits <- sapply(candidate_cols, function(cn) {
+  v <- colData(tse)[[cn]]
+  if (!is.factor(v) && !is.character(v)) return(FALSE)
+  any(grepl("anal", v, ignore.case = TRUE)) || any(grepl("stick", v, ignore.case = TRUE))
+})
+content_cols <- candidate_cols[content_hits]
+hits <- unique(c(name_hits, content_cols))
+
+sample_field_override <- NA
+sample_field <- if (is.na(sample_field_override)) if (length(hits)>0) hits[1] else stop("No se detectó columna de tipo de muestra") else sample_field_override
+
+values_override <- NA
+if (all(is.na(values_override))) {
+  v <- colData(tse)[[sample_field]]
+  keep <- grepl("anal", v, ignore.case = TRUE) | grepl("stick", v, ignore.case = TRUE)
+} else {
+  keep <- tolower(colData(tse)[[sample_field]]) %in% tolower(values_override)
+}
+tse8 <- tse[, keep]
+if (ncol(tse8) != 8) warning(sprintf("Se seleccionaron %d muestras (esperadas 8). Ajuste 'values_override'.", ncol(tse8)))
+
+ps8 <- mia::convertToPhyloseq(tse8)
+meta_df <- as.data.frame(colData(tse8)) %>% tibble::rownames_to_column("sample_id")
+group_var <- sample_field
+```
+
+---
+
+# P2. ¿Qué métricas de **alfa diversidad** calculamos y cómo las comparamos entre grupos?
+```{r}
+counts <- as.matrix(assay(tse8, "counts"))
+
+richness <- rowSums(t(counts) > 0)
+shannon  <- diversity(t(counts), index = "shannon")
+simpson  <- diversity(t(counts), index = "simpson")
+evenness <- shannon / log(richness)
+
+alpha_df <- tibble(
+  sample_id = colnames(tse8),
+  richness  = as.numeric(richness),
+  shannon   = as.numeric(shannon),
+  simpson   = as.numeric(simpson),
+  evenness  = as.numeric(evenness)
+) %>% left_join(meta_df, by = "sample_id")
+
+alpha_long <- alpha_df %>% pivot_longer(cols = c(richness, shannon, simpson, evenness),
+                                        names_to = "metric", values_to = "value")
+
+ggplot(alpha_long, aes(x = .data[[group_var]], y = value)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.85) +
+  facet_wrap(~ metric, scales = "free_y") +
+  theme_minimal() +
+  labs(x = group_var, y = NULL, title = "Alfa diversidad por grupo")
+```
+
+### P2.1. ¿Las diferencias son estadísticamente significativas?
+```{r}
+alpha_tests <- alpha_long %>% group_by(metric) %>%
+  summarise(p_value = tryCatch(wilcox.test(value ~ .data[[group_var]])$p.value, error = function(e) NA_real_))
+alpha_tests
+```
+
+---
+
+# P3. ¿Qué distancias de **beta diversidad** usamos y por qué?
+```{r}
+ps8_rel <- transform_sample_counts(ps8, function(x) x / sum(x))
+bray <- phyloseq::distance(ps8_rel, method = "bray")
+
+tse8_clr <- mia::transformCounts(tse8, method = "clr")
+clr_mat <- t(assay(tse8_clr, "clr"))
+aitchison <- dist(clr_mat, method = "euclidean")
+
+ord_bray <- ape::pcoa(bray)
+ord_ait  <- ape::pcoa(aitchison)
+
+plot_pcoa <- function(ord, df_meta, group_var, title) {
+  sco <- as.data.frame(ord$vectors[, 1:2])
+  sco$sample_id <- rownames(sco)
+  sco <- dplyr::left_join(sco, df_meta, by = c("sample_id" = "sample_id"))
+  ggplot(sco, aes(x = Axis.1, y = Axis.2, color = .data[[group_var]])) +
+    geom_point(size = 3) +
+    theme_minimal() +
+    labs(title = title,
+         x = sprintf("PCoA1 (%.1f%%)", ord$values$Relative_eig[1]*100),
+         y = sprintf("PCoA2 (%.1f%%)", ord$values$Relative_eig[2]*100))
+}
+
+p1 <- plot_pcoa(ord_bray, meta_df, group_var, "PCoA – Bray–Curtis (relativas)")
+p2 <- plot_pcoa(ord_ait,  meta_df, group_var, "PCoA – Aitchison (CLR)")
+p1; p2
+```
+
+---
+
+# P4. ¿Existen diferencias globales en composición entre grupos? (PERMANOVA + dispersión)
+```{r}
+D_bray <- as.matrix(bray)
+D_ait  <- as.matrix(aitchison)
+
+perma_bray <- adonis2(D_bray ~ .data[[group_var]], data = meta_df, permutations = 999)
+perma_ait  <- adonis2(D_ait  ~ .data[[group_var]], data = meta_df, permutations = 999)
+
+bd_bray <- betadisper(as.dist(bray), meta_df[[group_var]])
+bd_ait  <- betadisper(as.dist(aitchison), meta_df[[group_var]])
+
+list(PERMANOVA_Bray = perma_bray,
+     PERMANOVA_Aitchison = perma_ait,
+     Betadisper_Bray = anova(bd_bray),
+     Betadisper_Aitchison = anova(bd_ait))
+```
+
+---
+
+# P5. ¿Podemos usar **NMDS** como alternativa de ordención?
+```{r}
+set.seed(123)
+nmds_bray <- metaMDS(as.dist(bray), k = 2, trymax = 100)
+nmds_df <- as.data.frame(nmds_bray$points) %>%
+  tibble::rownames_to_column("sample_id") %>%
+  left_join(meta_df, by = "sample_id")
+ggplot(nmds_df, aes(x = MDS1, y = MDS2, color = .data[[group_var]])) +
+  geom_point(size = 3) + theme_minimal() +
+  labs(title = sprintf("NMDS – Bray–Curtis (stress = %.3f)", nmds_bray$stress))
+```
+
+---
+
+# P6. (Opcional) ¿Cuándo usar **UniFrac**?
+```{r}
+# if (!is.null(phyloseq::phy_tree(ps8, errorIfNULL = FALSE))) {
+#   unif_w <- UniFrac(ps8, weighted = TRUE, normalized = TRUE, parallel = FALSE, fast = TRUE)
+#   ord_unif <- ape::pcoa(unif_w)
+#   plot_pcoa(ord_unif, meta_df, group_var, "PCoA – Weighted UniFrac")
+# }
+```
+
+---
+
+# P7. ¿Qué resultados deberíamos **exportar** para un informe?
+```{r}
+write.csv(alpha_df, "alpha_diversity_metrics.csv", row.names = FALSE)
+
+sink("permanova_betadisper.txt")
+cat("== PERMANOVA Bray ==\n"); print(perma_bray)
+cat("\n== PERMANOVA Aitchison ==\n"); print(perma_ait)
+cat("\n== Betadisper Bray ==\n"); print(anova(bd_bray))
+cat("\n== Betadisper Aitchison ==\n"); print(anova(bd_ait))
+sink()
+```

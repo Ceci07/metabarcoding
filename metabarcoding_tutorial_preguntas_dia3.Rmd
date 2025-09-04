@@ -1,0 +1,204 @@
+---
+title: "Metabarcoding Introductorio – Tutorial en Preguntas (OMA-based)"
+author: "Curso Introductorio"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: readable
+  pdf_document:
+    toc: true
+    toc_depth: 3
+---
+
+> **Cómo usar este material**  
+> Este tutorial guía un flujo mínimo para datos de amplicón 16S/18S ya procesados (objeto `phyloseq`) y lo reestructura en **preguntas** que promueven razonamiento. Está inspirado en el *OMA tutorial* y usa **TreeSummarizedExperiment (TSE)** con **mia/microbiome**.  
+> Cobertura: *calidad, prevalencia, dominancia* (cap. 9), *aglomeración por taxones* (cap. 11), *transformaciones* (cap. 12) y *composición de comunidades* (cap. 13).
+
+## 0) Preparación
+
+```{r}
+# install.packages(c("tidyverse","ggplot2","cowplot"))
+# if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+# BiocManager::install(c("phyloseq","mia","TreeSummarizedExperiment","microbiome","Biostrings","vegan","ape"))
+
+library(tidyverse)
+library(phyloseq)
+library(mia)
+library(TreeSummarizedExperiment)
+library(microbiome)
+library(Biostrings)
+library(cowplot)
+library(vegan)
+library(ape)
+set.seed(123)
+```
+
+---
+
+# P1. ¿Cómo transformamos un `phyloseq` en `TreeSummarizedExperiment` y preservamos las secuencias?
+**Objetivo.** Cargar `physeq.rds`, convertirlo a **TSE** con `mia::convertFromPhyloseq()`, **guardar las secuencias que están en `rownames(tse)` en `referenceSeq(tse)`** y luego **renombrar** *features* a `ASV#`.
+
+```{r}
+ps <- readRDS("physeq.rds")
+
+# Convertir a TSE con la función actual
+tse <- mia::convertFromPhyloseq(ps)
+
+# Guardar secuencias desde rownames(tse) y renombrar
+seqs <- rownames(tse)                       # aquí están las secuencias
+mia::referenceSeq(tse) <- DNAStringSet(seqs)
+
+old_ids <- rownames(tse)
+new_ids <- paste0("ASV", seq_along(old_ids))
+rownames(tse) <- new_ids
+
+rowData(tse)$old_id   <- old_ids
+rowData(tse)$sequence <- as.character(mia::referenceSeq(tse))
+
+tse
+```
+
+**Reflexión breve.** ¿Qué ventajas trae conservar las secuencias en `referenceSeq` frente a mantenerlas como `rownames`?
+
+---
+
+# P2. ¿Qué columnas en `colData(tse)` describen el tipo de muestra?
+**Objetivo.** Identificar la columna de metadatos que etiquete el tipo de muestra y **subsetear** a 8 muestras: *anal swab* y *sticking*.
+
+```{r}
+candidate_cols <- colnames(colData(tse))
+
+name_hits <- grep("type|sample|source|body|material|specimen|site|toma|muestra|origen",
+                  candidate_cols, ignore.case = TRUE, value = TRUE)
+
+content_hits <- sapply(candidate_cols, function(cn) {
+  v <- colData(tse)[[cn]]
+  if (!is.factor(v) && !is.character(v)) return(FALSE)
+  any(grepl("anal", v, ignore.case = TRUE)) || any(grepl("stick", v, ignore.case = TRUE))
+})
+content_cols <- candidate_cols[content_hits]
+
+hits <- unique(c(name_hits, content_cols))
+
+sample_field_override <- NA  # ej. "SampleType"
+sample_field <- if (is.na(sample_field_override)) {
+  if (length(hits) == 0) stop("No se detectó columna de tipo de muestra; revise colData(tse).")
+  hits[1]
+} else sample_field_override
+
+unique(colData(tse)[[sample_field]])
+
+values_override <- NA  # ej. c("anal swab","sticking")
+if (all(is.na(values_override))) {
+  v <- colData(tse)[[sample_field]]
+  keep <- grepl("anal", v, ignore.case = TRUE) | grepl("stick", v, ignore.case = TRUE)
+} else {
+  keep <- tolower(colData(tse)[[sample_field]]) %in% tolower(values_override)
+}
+
+tse8 <- tse[, keep]
+if (ncol(tse8) != 8) {
+  warning(sprintf("Se seleccionaron %d muestras (esperadas 8). Ajuste 'values_override'.", ncol(tse8)))
+}
+tse8
+```
+
+---
+
+# P3. ¿Qué chequeos de **calidad** básicos harías con estas 8 muestras?
+```{r}
+lib_sizes <- colSums(assay(tse8, "counts"))
+n_features <- colSums(assay(tse8, "counts") > 0)
+
+qc_tab <- tibble(
+  sample_id = colnames(tse8),
+  library_size = as.numeric(lib_sizes),
+  n_features = as.numeric(n_features)
+) %>% arrange(desc(library_size))
+
+knitr::kable(qc_tab, digits = 0, caption = "Resumen de calidad por muestra")
+
+qplot(lib_sizes, bins = 15) +
+  labs(x = "Lecturas por muestra", y = "Frecuencia", title = "Distribución de tamaños de librería") +
+  theme_minimal()
+```
+
+---
+
+# P4. ¿Cómo definimos y calculamos **prevalencia** y **dominancia**?  *(Cap. 9 OMA)*
+```{r}
+ps8 <- mia::convertToPhyloseq(tse8)
+
+prev_tbl <- microbiome::prevalence(ps8, detection = 0, sort = TRUE) %>%
+  tibble::enframe(name = "feature", value = "prevalence")
+
+dom_vec <- microbiome::dominance(ps8, index = "dom")
+dom_df <- tibble(sample_id = names(dom_vec), dominance = as.numeric(dom_vec))
+
+ggplot(prev_tbl, aes(prevalence)) + geom_histogram(bins = 30) +
+  labs(title = "Distribución de prevalencia (features)", x = "Prevalencia", y = "# ASVs") + theme_minimal()
+
+ggplot(dom_df, aes(x = reorder(sample_id, -dominance), y = dominance)) +
+  geom_col() + coord_flip() + theme_minimal() +
+  labs(title = "Dominancia por muestra", x = "Muestra", y = "Dominancia (taxón más abundante)")
+```
+
+---
+
+# P5. ¿Por qué **agrupar por taxones** y cómo hacerlo?  *(Cap. 11 OMA)*
+```{r}
+tax_level <- if ("Genus" %in% colnames(rowData(tse8))) "Genus" else {
+  L <- colnames(rowData(tse8))
+  L[grep("Genus|Family|Order|genus|family|order", L)][1]
+}
+
+tse_genus <- mia::taxAgg(tse8, rank = tax_level)
+tse_genus
+```
+
+---
+
+# P6. ¿Qué **transformaciones** son adecuadas para datos composicionales?  *(Cap. 12 OMA)*
+```{r}
+tse_rel  <- mia::transformCounts(tse8, method = "relabundance")
+tse_clr  <- mia::transformCounts(tse8, method = "clr")
+tse_lcpm <- mia::transformCounts(tse8, method = "log10pcounts")
+
+assayNames(tse_rel); assayNames(tse_clr); assayNames(tse_lcpm)
+```
+
+---
+
+# P7. ¿Cómo visualizar la **composición de comunidades** por muestra?  *(Cap. 13 OMA)*
+```{r}
+tse_genus_rel <- tse_genus %>% mia::transformCounts(method = "relabundance")
+
+topN <- 15
+genus_means <- rowMeans(assay(tse_genus_rel, "relabundance"))
+top_ids <- names(sort(genus_means, decreasing = TRUE))[seq_len(min(topN, length(genus_means)))]
+
+tse_top <- tse_genus_rel[top_ids, ]
+
+df_top <- as.data.frame(t(assay(tse_top, "relabundance"))) %>%
+  tibble::rownames_to_column("sample_id") %>%
+  pivot_longer(-sample_id, names_to = "taxon", values_to = "abund") %>%
+  dplyr::left_join(as.data.frame(colData(tse_top)) %>% tibble::rownames_to_column("sample_id"), by = "sample_id")
+
+ggplot(df_top, aes(x = sample_id, y = abund, fill = taxon)) +
+  geom_col() +
+  theme_minimal() +
+  labs(title = paste0("Composición por muestra (Top ", topN, " ", tax_level, ")"),
+       x = "Muestra", y = "Abundancia relativa") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+---
+
+# P8. ¿Qué guardarías para continuar el análisis o compartir resultados?
+```{r}
+saveRDS(tse8,      file = "tse8_raw.rds")
+saveRDS(tse_genus, file = "tse_genus_raw.rds")
+write.csv(qc_tab,  file = "qc_table_tse8.csv", row.names = FALSE)
+```
