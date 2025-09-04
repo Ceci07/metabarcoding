@@ -31,7 +31,7 @@ Teórico - Práctico: Introducción al paquete mia: Creación de objetos treeSum
 
 Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado. 2 hs.  
 
-[Tutorial 2](https://ceci07.github.io/metabarcoding/dia3.html)
+[Tutorial 2](https://ceci07.github.io/metabarcoding/tutorial_conversionPhyloseqTSE_2_QA_intercalado.html)
 
 ## Día 4
 
