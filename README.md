@@ -47,7 +47,7 @@ Taller: Interpretación de resultados y discusión.
 
 Los comandos de hoy utilizan el objeto mia del día 4. 
 
-[Tutorial 4]([https://ceci07.github.io/metabarcoding/tutorial-4.R](https://github.com/Ceci07/metabarcoding/blob/main/tutorial-4.R)
+[Tutorial 4](https://github.com/Ceci07/metabarcoding/blob/main/tutorial-4.R)  
 
 
 ## Evaluación
