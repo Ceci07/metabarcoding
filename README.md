@@ -45,7 +45,9 @@ Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversida
 Teórico - Práctico: Abundancias diferenciales (Deseq2, ANCOM). 2 hs.   
 Taller: Interpretación de resultados y discusión.
 
-[Tutorial 4]()
+Los comandos de hoy utilizan el objeto mia del día 4. 
+
+[Tutorial 4](https://ceci07.github.io/metabarcoding/tutorial-4.R)
 
 
 ## Evaluación
