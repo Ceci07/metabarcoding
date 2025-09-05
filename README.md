@@ -51,4 +51,4 @@ Los comandos de hoy utilizan el objeto mia del día 4.
 
 
 ## Evaluación
-A definir
+
