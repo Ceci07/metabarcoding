@@ -3,7 +3,7 @@
 ## Fecha: Del Lunes 31/8 al Viernes 4/9 del 2026 de 9:00 a 13:00  
 ## Lugar: Institut Pasteur de Montevideo - Uruguay   
 ## Curso [PEDECIBA-Biología](https://www.pedeciba.edu.uy/es/curso/taller-de-analisis-de-datos-de-metabarcoding-2do-sem-2026/).     
-### Responsables: Dra. Tamara Fernández-Calero y Silvia Garaycochea  
+### Responsables: Dra. Tamara Fernández-Calero y Dra. Silvia Garaycochea  
 ### Docentes: Dra. Tamara Fernández-Calero, Dra. Silvia Garaycochea, Dra. Patricia Vaz, Dr Gastón Azziz, Dr. Pablo Fresia, Dra. Cecilia Salazar, Dr. Matías Giménez y Dra. Yésica Bernaschina.  
 
 
@@ -22,7 +22,7 @@ Teórico - Práctico: Introducción al uso del paquete DADA2: Estructura de arch
 
 Teórico - Práctico: Introducción al paquete Phyloseq. Creación de objetos phyloseq, rarefacción. 1 hr.  
 
-[Tutorial 1](https://ceci07.github.io/metabarcoding/dia2.html)  
+[Tutorial 1](https://ceci07.github.io/metabarcoding/dia2_2026.html)  
 
 
 ## Día 3
