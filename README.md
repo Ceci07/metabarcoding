@@ -1,10 +1,10 @@
 # TALLER DE ANÁLISIS DE DATOS DE METABARCODING
 
-## Fecha: Del Lunes 1/9 al Viernes 5/9 del 2025 de 8:30 a 12:30  
-## Lugar: Institut Pasteur de Montevideo - Uruguay 
-## Curso [PEDECIBA-Biología](https://www.pedeciba.edu.uy/es/curso/taller-de-analisis-de-datos-de-metabarcoding-2do-sem-2025/).   
-### Responsables: Dr. Pablo Fresia y Dra. Tamara Fernández-Calero
-### Docentes: Dr. Pablo Fresia, Dra. Tamara Fernández-Calero y Dra. Cecilia Salazar
+## Fecha: Del Lunes 31/8 al Viernes 4/9 del 2026 de 9:00 a 13:00  
+## Lugar: Institut Pasteur de Montevideo - Uruguay   
+## Curso [PEDECIBA-Biología](https://www.pedeciba.edu.uy/es/curso/taller-de-analisis-de-datos-de-metabarcoding-2do-sem-2026/).     
+### Responsables: Dra. Tamara Fernández-Calero y Silvia Garaycochea  
+### Docentes: Dra. Tamara Fernández-Calero, Dra. Silvia Garaycochea, Dra. Patricia Vaz, Dr Gastón Azziz, Dr. Pablo Fresia, Dra. Cecilia Salazar, Dr. Matías Giménez y Dra. Yésica Bernaschina.  
 
 
 ## Día 1
@@ -51,4 +51,5 @@ Los comandos de hoy utilizan el objeto mia del día 4.
 
 
 ## Evaluación
+A definir.  
 
