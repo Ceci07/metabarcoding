@@ -15,6 +15,8 @@ Teórico: Pasos básicos para el análisis de datos de metabarcoding. 1 hs.
 
 Práctico: Chequeo de la instalación del software necesario y acceso a datos con los que vamos a trabajar.  Repaso de R. 2 hs.  
 
+[Tutorial 1](https://ceci07.github.io/metabarcoding/dia1_2026.html)  - Introducción 
+
 
 ## Día 2
 
@@ -22,8 +24,8 @@ Teórico - Práctico: Introducción al uso del paquete DADA2: Estructura de arch
 
 Teórico - Práctico: Introducción al paquete Phyloseq. Creación de objetos phyloseq, rarefacción. 1 hr.  
 
-[Tutorial 1a](https://ceci07.github.io/metabarcoding/dia2_2026.html)  - DADA2  
-[Tutorial 1b](https://ceci07.github.io/metabarcoding/dia2_phy_2026.html)  - phyloseq  
+[Tutorial 2a](https://ceci07.github.io/metabarcoding/dia2_2026.html)  - DADA2  
+[Tutorial 2b](https://ceci07.github.io/metabarcoding/dia2_phy_2026.html)  - phyloseq  
 
 
 ## Día 3
@@ -32,13 +34,13 @@ Teórico - Práctico: Introducción al paquete mia: Creación de objetos treeSum
 
 Teórico – Práctico: Análisis de calidad. Dominancia, Prevalencia y Filtrado. 2 hs.  
 
-[Tutorial 2](https://ceci07.github.io/metabarcoding/tutorial_conversionPhyloseqTSE_2_QA_intercalado.html)
+[Tutorial 3](https://ceci07.github.io/metabarcoding/tutorial_conversionPhyloseqTSE_2_QA_intercalado.html)
 
 ## Día 4
 
 Teórico - Práctico: Análisis de alfa y beta diversidad: Índices de diversidad alfa, Métodos de estudio de la diversidad beta y visualización de los resultados.  4 hs.  
 
-[Tutorial 3](https://ceci07.github.io/metabarcoding/tutorial_composicionYDiversidad_QA_intercalado.html)
+[Tutorial 4](https://ceci07.github.io/metabarcoding/tutorial_composicionYDiversidad_QA_intercalado.html)
 
 
 ## Día 5
@@ -48,7 +50,7 @@ Taller: Interpretación de resultados y discusión.
 
 Los comandos de hoy utilizan el objeto mia del día 4. 
 
-[Tutorial 4](https://github.com/Ceci07/metabarcoding/blob/main/tutorial-4.R)  
+[Tutorial 5](https://github.com/Ceci07/metabarcoding/blob/main/tutorial-4.R)  
 
 
 ## Evaluación
