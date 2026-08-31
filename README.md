@@ -15,7 +15,7 @@ Teórico: Pasos básicos para el análisis de datos de metabarcoding. 1 hs.
 
 Práctico: Chequeo de la instalación del software necesario y acceso a datos con los que vamos a trabajar.  Repaso de R. 2 hs.  
 
-[Tutorial 1](https://ceci07.github.io/metabarcoding/dia1_2026.html)  - Introducción 
+[Tutorial 1](https://ceci07.github.io/metabarcoding/dIa1_2026.html)  - Introducción 
 
 
 ## Día 2
