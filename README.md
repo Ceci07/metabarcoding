@@ -24,8 +24,9 @@ Teórico - Práctico: Introducción al uso del paquete DADA2: Estructura de arch
 
 Teórico - Práctico: Introducción al paquete Phyloseq. Creación de objetos phyloseq, rarefacción. 1 hr.  
 
-[Tutorial 2a](https://ceci07.github.io/metabarcoding/dia2_2026_load.html)  - DADA2  
-[Tutorial 2b](https://ceci07.github.io/metabarcoding/dia2_phy_2026.html)  - phyloseq  
+[Tutorial 2a](https://ceci07.github.io/metabarcoding/dia2_2026_load.html)  - DADA2    
+[Tutorial 2b](https://ceci07.github.io/metabarcoding/dia2_phy_2026.html)  - phyloseq    
+[Tutorial 2c](https://ceci07.github.io/metabarcoding/dia2_tree.html)  - tree    
 
 
 ## Día 3
