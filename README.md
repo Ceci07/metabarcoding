@@ -56,3 +56,7 @@ Los comandos de hoy utilizan el objeto mia del día 4.
 ## Evaluación
 A definir.  
 
+## Clases
+Las presentaciones se encuentran en este [link](https://drive.google.com/drive/folders/1gSb41lXwDZFQB-Ff6u5ItbSZOKZmeby_?usp=drive_link)
+
+
